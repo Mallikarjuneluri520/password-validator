@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  class PasswordValidatorTest {
 
     private static final String INVALID_LENGTH_UPPERCASE_DIGIT = "Password should contain at least one upper case letter or" +
-            " password length should be at least 8 or password should have at least one digit.";
-
+            " should contain at least 8 characters or should have at least one digit.";
     private static final String EMPTY_LOWER_CASE = "Password should not be empty or it should have at least one lower case letter. ";
 
 
