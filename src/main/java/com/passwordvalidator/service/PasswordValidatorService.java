@@ -13,8 +13,8 @@ public class PasswordValidatorService {
         this.passwordValidator = passwordValidator;
     }
 
-    public boolean validatePasswordFormat(String password){
-        return passwordValidator.isPasswordFormatValid(password);
+    public void validatePasswordFormat(String password){
+         passwordValidator.isPasswordFormatValid(password);
     }
 
 }

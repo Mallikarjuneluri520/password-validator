@@ -1,5 +1,6 @@
 package com.passwordvalidator.controller;
 
+import com.passwordvalidator.exception.PasswordValidatorException;
 import com.passwordvalidator.model.SignUp;
 import com.passwordvalidator.service.PasswordValidatorService;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,13 @@ public class PasswordValidatorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> validatePassword(@RequestBody SignUp signUp){
+    public ResponseEntity<?> validatePassword(@RequestBody SignUp signUp) {
 
-        if(passwordValidatorService.validatePasswordFormat(signUp.getPassword())) {
+        try {
+            passwordValidatorService.validatePasswordFormat(signUp.getPassword());
             return ResponseEntity.ok("valid");
+        } catch (PasswordValidatorException pve) {
+            return ResponseEntity.badRequest().body(pve.getReason());
         }
-        return ResponseEntity.badRequest().body("invalid password format");
     }
 }
