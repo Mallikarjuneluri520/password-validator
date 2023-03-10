@@ -39,7 +39,7 @@ public class PasswordValidator {
 
     private boolean validateOtherScenarios(String password) {
 
-        if(password.matches("(.*[A-Z].*) ") || password.matches("(.*\\d.*)") || password.length()>7){
+        if(password.matches("(.*[A-Z].*)") || password.matches("(.*\\d.*)") || password.length()>7){
             return true;
         }
         logger.error("invalid password format excepting at least one upper case or length >7 or at least one digit");
