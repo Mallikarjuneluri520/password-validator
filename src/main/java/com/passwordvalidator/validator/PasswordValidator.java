@@ -1,14 +1,18 @@
 package com.passwordvalidator.validator;
 
-import com.passwordvalidator.exception.PasswordValidatorException;
 import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class PasswordValidator {
+
+    @Autowired
+    private  List<IPasswordValidator> passwordValidatorList;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -27,22 +31,21 @@ public class PasswordValidator {
      * @param password
      * @return
      */
-    public boolean isPasswordFormatValid(String password){
+    public String isPasswordFormatValid(String password){
 
-        if(StringUtils.isNotBlank(password) && password.matches("(.*[a-z].*)") && validateOtherScenarios(password)){
-            logger.debug("validated password format");
-            return true;
+
+        if(StringUtils.isNotEmpty(password)) {
+            for (IPasswordValidator passwordValidator : passwordValidatorList) {
+                if (!passwordValidator.validate(password))
+
+                    return passwordValidator.getValidationMessage();
+            }
+        }else{
+            return "Password shouldn't be null";
         }
-        logger.error("invalid password format");
-        throw new PasswordValidatorException(HttpStatus.BAD_REQUEST,EMPTY_LOWER_CASE);
+
+        return null;
+
     }
 
-    private boolean validateOtherScenarios(String password) {
-
-        if(password.matches("(.*[A-Z].*)") || password.matches("(.*\\d.*)") || password.length()>7){
-            return true;
-        }
-        logger.error("invalid password format excepting at least one upper case or length >7 or at least one digit");
-        throw new PasswordValidatorException(HttpStatus.BAD_REQUEST,INVALID_LENGTH_UPPERCASE_DIGIT);
-    }
 }

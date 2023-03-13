@@ -22,11 +22,7 @@ public class PasswordValidatorController {
     @PostMapping
     public ResponseEntity<?> validatePassword(@RequestBody SignUp signUp) {
 
-        try {
-            passwordValidatorService.validatePasswordFormat(signUp.getPassword());
-            return ResponseEntity.ok("valid");
-        } catch (PasswordValidatorException pve) {
-            return ResponseEntity.badRequest().body(pve.getReason());
-        }
+        passwordValidatorService.validatePasswordFormat(signUp.getPassword());
+        return ResponseEntity.ok("valid");
     }
 }

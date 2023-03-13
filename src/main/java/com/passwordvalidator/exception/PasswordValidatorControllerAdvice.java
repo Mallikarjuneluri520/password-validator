@@ -11,7 +11,7 @@ public class PasswordValidatorControllerAdvice {
         @ExceptionHandler(PasswordValidatorException.class)
         public ResponseEntity<?> handlePasswordValidatorException(PasswordValidatorException passwordValidatorException){
 
-            return ResponseEntity.status(passwordValidatorException.getStatusCode()).body(passwordValidatorException.getReason());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(passwordValidatorException.getReason());
 
         }
 
